@@ -21,6 +21,7 @@ class AuthBackendTest(TestCase):
             codename="do_something",
             content_type=ctype, defaults={'name': 'Can do things'})
 
+        self.perm = do_something
         self.owner.add_permission(do_something)
 
     def test_has_perm_by_global_role(self):
@@ -49,6 +50,28 @@ class AuthBackendTest(TestCase):
         self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something"))
 
         assign_global_role(tjibbes, self.owner)
+
+        self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something"))
+
+        tjibbe.groups.add(tjibbes)
+
+        self.assertTrue(self.backend.has_perm(tjibbe, "app.do_something"))
+
+        tjibbe.groups.remove(tjibbes)
+
+        self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something"))
+
+    def test_has_perm_by_global_permission_on_group(self):
+
+        """ Test global permissions when the permission has been set
+        onto a group that the user is a member of """
+
+        tjibbe = User.objects.create(username="Tjibbe")
+        tjibbes = Group.objects.create(name="Tjibbes")
+
+        self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something"))
+
+        tjibbes.permissions.add(self.perm)
 
         self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something"))
 

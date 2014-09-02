@@ -66,11 +66,11 @@ class AuthBackend(object):
         if _perm.user_set.filter(username=user.username).exists():
             return True
 
-        perm_group_ids = _perm.group_set.all().values_list('id', flat=True)
+        user_group_ids = user.groups.all().values_list('id', flat=True)
 
         # Check whether the user and the permission share any groups
         #
-        if _perm.group_set.filter(pk__in=perm_group_ids):
+        if _perm.group_set.filter(pk__in=user_group_ids):
             return True
 
         # Now check on the roles. Start with global roles
