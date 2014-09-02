@@ -1,6 +1,7 @@
 import logging
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from djinn_auth.utils import get_user_global_roles
 
 
 LOGGER = logging.getLogger("djinn_auth")
@@ -65,7 +66,7 @@ class AuthBackend(object):
         if _perm.user_set.filter(username=user.username).exists():
             return True
 
-        perm_group_ids = perm.group_set.all().values_list('id', flat=True)
+        perm_group_ids = _perm.group_set.all().values_list('id', flat=True)
 
         # Check whether the user and the permission share any groups
         #
@@ -74,11 +75,12 @@ class AuthBackend(object):
 
         # Now check on the roles. Start with global roles
         #
-        perm_role_ids = perm.role_set.all().values_list('id', flat=True)
+        perm_role_ids = _perm.role_set.all().values_list('id', flat=True)
 
         if not obj or getattr(obj, "acquire_global_roles", True):
 
-            if user.globalrole_set.filter(role__id__in=perm_role_ids).exists():
+            if get_user_global_roles(user).filter(
+                    role__id__in=perm_role_ids).exists():
                 return True
 
         # Now go for local roles if need be
