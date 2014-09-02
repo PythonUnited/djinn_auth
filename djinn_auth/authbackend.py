@@ -1,7 +1,6 @@
 import logging
 from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
-from djinn_auth.utils import get_user_global_roles
+from djinn_auth.utils import get_user_global_roles, get_user_local_roles
 
 
 LOGGER = logging.getLogger("djinn_auth")
@@ -87,12 +86,8 @@ class AuthBackend(object):
         #
         if obj:
 
-            ctype = ContentType.objects.get_for_model(obj)
-
-            if user.localrole_set.filter(
-                    role__id__in=perm_role_ids,
-                    instance_id=obj.id,
-                    instance_ct=ctype
+            if get_user_local_roles(user, obj).filter(
+                    role__id__in=perm_role_ids
             ).exists():
                 return True
 
