@@ -47,7 +47,64 @@ model instance by:
   4. giving the permission to a group the user is part of on the object
 
 To prevent acquisition of the global permissions on an instance,
-implement the 'acquire_global_roles' property and return False. This
+implement the `acquire_global_roles` property and return False. This
 enables the scenario where users have a global 'allow', but some local
 'forbiddens'. Please note that this only disallows global _roles_, not
 direct permissions on the user or it's groups itself.
+
+
+Installation
+------------
+
+Install the usual way using _pip_ or _easy\_install_. Add djinn\_auth
+to your INSTALLED\_APPS. Add the djinn\_auth backend to the
+AUTHENTICATION\_BACKENDS setting:
+
+    AUTHENTICATION_BACKENDS = (
+      'django.contrib.auth.backends.ModelBackend',
+      'djinn_auth.authbackend.AuthBackend'
+      )
+
+
+Usage
+-----
+
+Basic use of the djinn\_auth module is not different from using the
+builtin Django authorisation. You can use the same decorators or
+calls, since djinn\_auth adds it's own backend to the autorisation
+chain.
+
+Create a role and add permissions:
+
+    from djinn_auth.models import Role
+    from django.contrib.auth.models import Permission
+
+    owner_role = Role.objects.create(name="owner")
+
+    do_something = Permission.objects.get(codename="do_something")
+
+    owner_role.add_permission(do_something)
+
+
+To assign a global role for a user or group (assuming you have a user
+_bobdobalina_):
+
+    from djinn_auth.utils import assign_global_role
+
+    assign_global_role(bobdobalina, owner_role)
+
+
+Revoke it:
+
+    from djinn_auth.utils import unassign_global_role
+
+    unassign_global_role(bobdobalina, owner_role)
+
+
+Assign a local role:
+
+    from djinn_auth.utils import assign_local_role
+
+    instance = MyContentType.objects.get(pk=666)
+
+    assign_local_role(bobdobalina, instance, owner_role)
