@@ -2,7 +2,32 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+from django.db.models import get_model
 from djinn_auth.models import LocalRole, GlobalRole
+
+
+def get_group_model():
+
+    """ Though Django doesn't let you override the group model, we do... """
+
+    group_model = Group
+
+    if getattr(settings, 'AUTH_GROUP_MODEL', None):
+        try:
+            app_label, model_name = settings.AUTH_GROUP_MODEL.split('.')
+        except ValueError:
+            raise ImproperlyConfigured(
+                "AUTH_GROUP_MODEL must be of the form 'app_label.model_name'")
+
+        group_model = get_model(app_label, model_name)
+
+        if group_model is None:
+            raise ImproperlyConfigured("AUTH_GROUP_MODEL refers to model '%s' "
+                                       "that has not been installed" %
+                                       settings.AUTH_GROUP_MODEL)
+    return group_model
 
 
 def set_local_role(assignee, instance, role):
@@ -101,7 +126,7 @@ def get_user_global_roles(user, as_role=False):
     is True, return Role instances instead of GlobalRole objects."""
 
     user_ct = ContentType.objects.get_for_model(get_user_model())
-    group_ct = ContentType.objects.get_for_model(Group)
+    group_ct = ContentType.objects.get_for_model(get_group_model())
 
     user_group_ids = user.groups.all().values_list('id', flat=True)
 
@@ -122,7 +147,7 @@ def get_user_local_roles(user, instance, as_role=False):
     is True, return the Role objects instead of the LocalRole objects."""
 
     user_ct = ContentType.objects.get_for_model(get_user_model())
-    group_ct = ContentType.objects.get_for_model(Group)
+    group_ct = ContentType.objects.get_for_model(get_group_model())
     instance_ct = ContentType.objects.get_for_model(instance)
 
     user_group_ids = user.groups.all().values_list('id', flat=True)

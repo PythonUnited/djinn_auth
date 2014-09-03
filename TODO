@@ -1,0 +1,2 @@
+* allow for override of user model 'groups' when a custom user model
+   is used
