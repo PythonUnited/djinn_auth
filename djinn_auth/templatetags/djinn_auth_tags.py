@@ -24,6 +24,12 @@ class HasPermissionNode(IfNode):
         else:
             perm = self.perm
 
+        # Normalize permission if need be...
+        #
+        if ctx and perm in ["delete", "change", "add", "view"]:
+            perm = "%s.%s_%s" % (ctx._meta.app_label, perm,
+                                 ctx._meta.object_name.lower())
+
         if usr.has_perm(perm, obj=ctx):
             return self.nodelist_true.render(context)
         else:
