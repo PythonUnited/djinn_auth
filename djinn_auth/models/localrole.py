@@ -20,4 +20,4 @@ class LocalRole(RoleAssignment):
 
     def __unicode__(self):
 
-        return u"%s is %s for %s" % (self.assignee, self.role, self.content)
+        return u"%s is %s for %s" % (self.assignee, self.role, self.instance)
