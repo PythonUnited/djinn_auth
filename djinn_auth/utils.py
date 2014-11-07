@@ -10,7 +10,10 @@ from djinn_auth.models import LocalRole, GlobalRole
 
 def get_group_model():
 
-    """ Though Django doesn't let you override the group model, we do... """
+    """Even though Django doesn't let you override the group model, we
+    do...
+
+    """
 
     group_model = Group
 
@@ -33,7 +36,7 @@ def get_group_model():
 def set_local_role(assignee, instance, role):
 
     """Set the local role. Existing local roles on the given instance with
-    the same role will be discarded
+    the same role will be discarded.
 
     """
 
@@ -118,6 +121,16 @@ def get_global_roles(assignee, as_role=False):
         roles = [role.role for role in roles]
 
     return roles
+
+
+def has_global_role(assignee, role):
+
+    assignee_ct = ContentType.objects.get_for_model(assignee)
+
+    return GlobalRole.objects.filter(
+        role=role,
+        assignee_id=assignee.id,
+        assignee_ct=assignee_ct).exists()
 
 
 def get_user_global_roles(user, as_role=False):

@@ -14,7 +14,7 @@ class AuthBackendTest(TestCase):
     def setUp(self):
 
         self.backend = AuthBackend()
-        self.owner = Role.objects.create(name="owner")
+        self.owner, created = Role.objects.get_or_create(name="owner")
 
         ctype = ContentType.objects.get_for_model(Group)
 

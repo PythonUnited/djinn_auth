@@ -10,7 +10,7 @@ class LocalRoleTest(TestCase):
     def setUp(self):
 
         self.content = Group.objects.create(name="Foo")
-        self.owner = Role.objects.create(name="owner")
+        self.owner, created = Role.objects.get_or_create(name="owner")
 
     def test_set_local_role(self):
 
