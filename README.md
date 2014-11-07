@@ -72,7 +72,8 @@ Usage
 Basic use of the djinn\_auth module is not different from using the
 builtin Django authorisation. You can use the same decorators or
 calls, since djinn\_auth adds it's own backend to the autorisation
-chain.
+chain. Following, are some simpe cases. Check the utils.py file for
+the full API. Yes, you will need to read Python code..!
 
 Create a role and add permissions:
 
@@ -81,7 +82,7 @@ Create a role and add permissions:
 
     owner_role = Role.objects.create(name="owner")
 
-    do_something = Permission.objects.get(codename="do_something")
+    do_something = Permission.objects.get(codename="myapp.do_something")
 
     owner_role.add_permission(do_something)
 
@@ -89,22 +90,38 @@ Create a role and add permissions:
 To assign a global role for a user or group (assuming you have a user
 _bobdobalina_):
 
-    from djinn_auth.utils import assign_global_role
+    >> from djinn_auth.utils import assign_global_role, has_global_role
+    >> assign_global_role(bobdobalina, owner_role)
+    >> has_global_role(bobdobalina, owner_role)
+    True
+    >>
 
-    assign_global_role(bobdobalina, owner_role)
+This should give us the permission granted to the role (please note that
+the backend is normally called by the Django auth machinery using the
+_User.has_perm_ call:
 
+    >> from djinn_auth.authbackend import AuthBackend
+    >> backend = AuthBackend()
+    >> backend.has_perm(bobdobalina, "myapp.do_something")
+    True
 
 Revoke it:
 
-    from djinn_auth.utils import unassign_global_role
-
-    unassign_global_role(bobdobalina, owner_role)
-
+    >> from djinn_auth.utils import unassign_global_role
+    >> unassign_global_role(bobdobalina, owner_role)
+    >> has_global_role(bobdobalina, owner_role)
+    False
+    >> backend.has_perm(bobdobalina, "myapp.do_something")
+    False
 
 Assign a local role:
 
-    from djinn_auth.utils import assign_local_role
-
-    instance = MyContentType.objects.get(pk=666)
-
-    assign_local_role(bobdobalina, instance, owner_role)
+    >> from djinn_auth.utils import assign_local_role, has_local_role
+    >> instance = MyContentType.objects.get(pk=666)
+    >> assign_local_role(bobdobalina, instance, owner_role)
+    >> has_local_role(bobdobaline, instance, owner_role)
+    True
+    >> backend.has_perm(bobdobalina, "myapp.do_something")
+    False
+    >> backend.has_perm(bobdobalina, "myapp.do_something", obj=instance)
+    True
