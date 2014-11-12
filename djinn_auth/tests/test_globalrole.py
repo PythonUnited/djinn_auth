@@ -24,6 +24,17 @@ class GlobalRoleTest(TestCase):
         self.assertTrue(has_global_role(tjibbe, self.role))
         self.assertFalse(has_global_role(gurbe, self.role))
 
+    def test_has_global_role(self):
+
+        tjibbe = User.objects.create(username="Tjibbe")
+
+        self.assertFalse(has_global_role(tjibbe, self.role))
+
+        assign_global_role(tjibbe, self.role)
+
+        self.assertTrue(has_global_role(tjibbe, self.role))
+        self.assertTrue(has_global_role(tjibbe, "somerole"))
+
     def test_unassign_global_role(self):
 
         tjibbe = User.objects.create(username="Tjibbe")

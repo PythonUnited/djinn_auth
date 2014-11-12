@@ -62,7 +62,9 @@ class AuthBackend(object):
 
         # Check whether the user is in the permission's user set
         #
-        if _perm.user_set.filter(username=user.username).exists():
+        _filter = {user.USERNAME_FIELD: user.get_username()}
+
+        if _perm.user_set.filter(**_filter).exists():
             return True
 
         user_group_ids = user.groups.all().values_list('id', flat=True)

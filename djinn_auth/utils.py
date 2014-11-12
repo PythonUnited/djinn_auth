@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import get_model
-from djinn_auth.models import LocalRole, GlobalRole
+from djinn_auth.models import LocalRole, GlobalRole, Role
 
 
 def get_group_model():
@@ -127,8 +127,13 @@ def has_global_role(assignee, role):
 
     assignee_ct = ContentType.objects.get_for_model(assignee)
 
+    if isinstance(role, Role):
+        role_name = role.name
+    else:
+        role_name = role
+
     return GlobalRole.objects.filter(
-        role=role,
+        role__name=role_name,
         assignee_id=assignee.id,
         assignee_ct=assignee_ct).exists()
 
@@ -200,8 +205,13 @@ def has_local_role(assignee, instance, role):
     instance_ct = ContentType.objects.get_for_model(instance)
     assignee_ct = ContentType.objects.get_for_model(assignee)
 
+    if isinstance(role, Role):
+        role_name = role.name
+    else:
+        role_name = role
+
     return LocalRole.objects.filter(
-        role=role,
+        role__name=role_name,
         assignee_id=assignee.id,
         assignee_ct=assignee_ct,
         instance_id=instance.id,

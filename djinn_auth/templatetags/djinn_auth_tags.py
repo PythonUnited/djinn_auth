@@ -41,7 +41,6 @@ def if_has_perm(parser, token):
     """ Usage: if_has_perm <context> <user object> '<permission codename>'"""
 
     bits = token.split_contents()[1:]
-
     ctx = TemplateLiteral(parser.compile_filter(bits[0]), bits[0])
     user = TemplateLiteral(parser.compile_filter(bits[1]), bits[1])
     perm = TemplateLiteral(parser.compile_filter(bits[2]), bits[2])
