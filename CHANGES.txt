@@ -2,6 +2,8 @@
 =====
 * Added admin.py for management ui
 * Made has_*_role functions accept role names as well as objects
+* fix for swapped user model
+* Added protected view mixin
 
 1.0.1
 =====

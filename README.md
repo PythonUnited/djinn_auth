@@ -125,3 +125,25 @@ Assign a local role:
     False
     >> backend.has_perm(bobdobalina, "myapp.do_something", obj=instance)
     True
+
+
+Views
+-----
+
+To protect class based views, djinn\_auth provides a mixin class that
+adds a permission check: djinn_auth.views.base.PermissionProtectedMixin.
+
+Use like so:
+
+    from django.views.generic.base import View
+    from djinn_auth.views.base import PermissionProtectedMixin
+
+    class MyView(PermissionProtectedMixin, View):
+
+        permission = "myapp.view"
+
+or even:
+
+    class MyView(PermissionProtectedMixin, View):
+
+        permission = {'GET': 'myapp.view', 'POST': 'myapp.edit'}
