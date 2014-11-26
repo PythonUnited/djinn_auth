@@ -1,0 +1,6 @@
+recursive-include djinn_auth *
+include README.md
+include TODO
+include *.txt
+exclude MANIFEST.in
+
