@@ -30,6 +30,11 @@ class LocalRoleTest(TestCase):
         self.assertFalse(has_local_role(tjibbe, self.content, self.owner))
         self.assertTrue(has_local_role(gurbe, self.content, self.owner))
 
+        set_local_role(tjibbe, self.content, "owner")
+
+        self.assertTrue(has_local_role(tjibbe, self.content, self.owner))
+        self.assertFalse(has_local_role(gurbe, self.content, self.owner))
+
     def test_set_local_role_to_group(self):
 
         tjibbe = User.objects.create(username="Tjibbe")
