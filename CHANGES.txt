@@ -1,7 +1,11 @@
+1.0.3
+=====
+* Some more support for roles as string repr in utils methods
+
 1.0.2
 =====
 * Added admin.py for management ui
-* Made has_*_role functions accept role names as well as objects
+* Made has_*_role functions in utils accept role names as well as objects
 * fix for swapped user model
 * Added protected view mixin
 

@@ -11,11 +11,11 @@ requires = [
     ]
 
 setup(name='djinn_auth',
-      version="1.0.2",
+      version="1.0.3",
       description='Djinn Intranet auth module, role based',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
-          "Development Status :: 3 - Alpha",
+          "Development Status :: 4 - Beta",
           "Framework :: Django",
           "Intended Audience :: Developers",
           "License :: Freely Distributable",
