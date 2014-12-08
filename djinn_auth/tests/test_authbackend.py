@@ -212,3 +212,28 @@ class AuthBackendTest(TestCase):
 
         self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something",
                                                obj=content))
+
+    def test_has_perm_with_acquisition(self):
+
+        content = Group.objects.create(name="Tjibbes")
+        parent = Group.objects.create(name="Parent")
+
+        tjibbe = User.objects.create(username="Tjibbe")
+
+        self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something",
+                                               obj=content))
+
+        assign_local_role(tjibbe, parent, self.owner)
+
+        self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something",
+                                               obj=content))
+
+        assign_local_role(tjibbe, parent, self.owner)
+
+        self.assertFalse(self.backend.has_perm(tjibbe, "app.do_something",
+                                               obj=content))
+
+        content.acquire_from = [parent]
+
+        self.assertTrue(self.backend.has_perm(tjibbe, "app.do_something",
+                                              obj=content))

@@ -93,4 +93,13 @@ class AuthBackend(object):
             ).exists():
                 return True
 
+        # Finally, we may have an acquire list, so as to be able to
+        # 'inherit' roles from another object, or objects.
+        #
+        for acq_obj in getattr(obj, "acquire_from", []):
+            if get_user_local_roles(user, acq_obj).filter(
+                    role__id__in=perm_role_ids
+            ).exists():
+                return True
+
         return False

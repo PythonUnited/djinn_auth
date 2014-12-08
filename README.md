@@ -52,6 +52,10 @@ enables the scenario where users have a global 'allow', but some local
 'forbiddens'. Please note that this only disallows global _roles_, not
 direct permissions on the user or it's groups itself.
 
+If you need to add some sort of hierarchy, you may do so using the
+`acquire_from` attribute on your instance, that must return a list of
+instances it wishes to obtain roles/permissions from.
+
 
 Installation
 ------------
