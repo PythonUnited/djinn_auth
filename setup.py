@@ -8,6 +8,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'django',
+    'django_polymorphic'
     ]
 
 setup(name='djinn_auth',
@@ -37,6 +38,5 @@ setup(name='djinn_auth',
       test_suite="djinn_auth",
       entry_points="""\
       [djinn.app]
-      urls=djinn_auth:get_urls
       """
       )
