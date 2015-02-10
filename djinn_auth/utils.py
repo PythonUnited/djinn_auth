@@ -208,7 +208,10 @@ def get_local_roles(instance, role=None):
     _filter = {'instance_id': instance.id, 'instance_ct': ctype}
 
     if role:
-        _filter['role'] = role
+        if type(role) in [str, unicode]:
+            _filter['role__name'] = role
+        else:
+            _filter['role'] = role
 
     return LocalRole.objects.filter(**_filter)
 

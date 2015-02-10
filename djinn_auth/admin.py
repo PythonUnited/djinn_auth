@@ -14,7 +14,10 @@ class RoleAdmin(admin.ModelAdmin):
 
 class LocalRoleAdmin(admin.ModelAdmin):
 
-    pass
+    list_display = ['role', 'instance_ct', 'instance_id', 'assignee_id',
+                    'assignee_ct']
+    list_filter = ['role', 'instance_ct', 'assignee_ct']
+    search_fields = ['role__name']
 
 
 class GlobalRoleAdmin(admin.ModelAdmin):
