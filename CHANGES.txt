@@ -1,3 +1,8 @@
+1.0.5
+=====
+* convenience on get_local_roles
+* admin enhancement
+
 1.0.4
 =====
 * Added group base implementation
