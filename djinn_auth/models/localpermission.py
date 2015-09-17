@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import Permission
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -13,11 +13,11 @@ class LocalPermission(models.Model):
 
     instance_ct = models.ForeignKey(ContentType, related_name='+')
     instance_id = models.PositiveIntegerField()
-    instance = generic.GenericForeignKey('instance_ct', 'instance_id')
+    instance = GenericForeignKey('instance_ct', 'instance_id')
 
     assignee_ct = models.ForeignKey(ContentType, related_name='+')
     assignee_id = models.PositiveIntegerField()
-    assignee = generic.GenericForeignKey('assignee_ct', 'assignee_id')
+    assignee = GenericForeignKey('assignee_ct', 'assignee_id')
 
     permission = models.ForeignKey(Permission)
 

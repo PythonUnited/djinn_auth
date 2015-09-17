@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from djinn_auth.models.role import Role
 
@@ -10,7 +10,7 @@ class RoleAssignment(models.Model):
 
     assignee_ct = models.ForeignKey(ContentType, related_name='+')
     assignee_id = models.PositiveIntegerField()
-    assignee = generic.GenericForeignKey('assignee_ct', 'assignee_id')
+    assignee = GenericForeignKey('assignee_ct', 'assignee_id')
 
     role = models.ForeignKey(Role)
 
