@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+try:
+    from django.contrib.contenttypes.fields import GenericForeignKey
+except:
+    # django <1.8 compatibility
+    from django.contrib.contenttypes.generic import GenericForeignKey
 
 
 class LocalPermission(models.Model):

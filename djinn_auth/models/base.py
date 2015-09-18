@@ -1,7 +1,11 @@
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from djinn_auth.models.role import Role
+try:
+    from django.contrib.contenttypes.fields import GenericForeignKey
+except:
+    # django <1.8 compatibility
+    from django.contrib.contenttypes.generic import GenericForeignKey
 
 
 class RoleAssignment(models.Model):
