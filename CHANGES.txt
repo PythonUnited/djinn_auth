@@ -1,3 +1,7 @@
+1.0.6
+=====
+* django 1.8+ and backward compatibility
+
 1.0.5
 =====
 * convenience on get_local_roles
