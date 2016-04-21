@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import get_model
+from django.apps import apps
 from djinn_auth.models import LocalRole, GlobalRole, Role
 
 
@@ -24,7 +24,7 @@ def get_group_model():
             raise ImproperlyConfigured(
                 "AUTH_GROUP_MODEL must be of the form 'app_label.model_name'")
 
-        group_model = get_model(app_label, model_name)
+        group_model = apps.get_model(app_label, model_name)
 
         if group_model is None:
             raise ImproperlyConfigured("AUTH_GROUP_MODEL refers to model '%s' "
