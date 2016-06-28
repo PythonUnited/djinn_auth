@@ -1,7 +1,10 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import Permission
-from polymorphic.models import PolymorphicModel
+try:
+    from polymorphic.models import PolymorphicModel
+except:
+    from polymorphic import PolymorphicModel
 
 
 class Group(PolymorphicModel):
