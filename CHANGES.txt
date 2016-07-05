@@ -1,3 +1,7 @@
+1.0.7
+=====
+* import fixes. Some libraries were updated
+
 1.0.6
 =====
 * django 1.8+ and backward compatibility

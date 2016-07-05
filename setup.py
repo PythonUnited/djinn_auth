@@ -12,7 +12,7 @@ requires = [
     ]
 
 setup(name='djinn_auth',
-      version="1.0.6",
+      version="1.0.7",
       description='Djinn Intranet auth module, role based',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
