@@ -12,11 +12,11 @@ class RoleAssignment(models.Model):
 
     """Abstract role assignment class"""
 
-    assignee_ct = models.ForeignKey(ContentType, related_name='+')
+    assignee_ct = models.ForeignKey(ContentType, related_name='+', on_delete=models.CASCADE)
     assignee_id = models.PositiveIntegerField()
     assignee = GenericForeignKey('assignee_ct', 'assignee_id')
 
-    role = models.ForeignKey(Role)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
 
     class Meta:
 
@@ -26,3 +26,5 @@ class RoleAssignment(models.Model):
     def __unicode__(self):
 
         return "%s is %s" % (self.assignee, self.role)
+
+    __str__ = __unicode__

@@ -14,7 +14,7 @@ class LocalRole(RoleAssignment):
     user or to usergroup.
     """
 
-    instance_ct = models.ForeignKey(ContentType, related_name='+')
+    instance_ct = models.ForeignKey(ContentType, related_name='+', on_delete=models.CASCADE)
     instance_id = models.PositiveIntegerField()
     instance = GenericForeignKey('instance_ct', 'instance_id')
 
@@ -25,3 +25,5 @@ class LocalRole(RoleAssignment):
     def __unicode__(self):
 
         return u"%s is %s for %s" % (self.assignee, self.role, self.instance)
+
+    __str__ = __unicode__

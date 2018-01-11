@@ -29,6 +29,8 @@ class Group(PolymorphicModel):
 
         return self.name
 
+    __str__ = __unicode__
+
     class Meta:
         ordering = ["name"]
         app_label = "djinn_auth"

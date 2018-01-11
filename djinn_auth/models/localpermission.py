@@ -15,15 +15,15 @@ class LocalPermission(models.Model):
 
     """
 
-    instance_ct = models.ForeignKey(ContentType, related_name='+')
+    instance_ct = models.ForeignKey(ContentType, related_name='+', on_delete=models.CASCADE)
     instance_id = models.PositiveIntegerField()
     instance = GenericForeignKey('instance_ct', 'instance_id')
 
-    assignee_ct = models.ForeignKey(ContentType, related_name='+')
+    assignee_ct = models.ForeignKey(ContentType, related_name='+', on_delete=models.CASCADE)
     assignee_id = models.PositiveIntegerField()
     assignee = GenericForeignKey('assignee_ct', 'assignee_id')
 
-    permission = models.ForeignKey(Permission)
+    permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
 
     class Meta:
 
@@ -33,3 +33,5 @@ class LocalPermission(models.Model):
 
         return u"%s has %s for %s" % (self.assignee, self.permission,
                                       self.content)
+
+    __str__ = __unicode__

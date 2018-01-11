@@ -20,6 +20,8 @@ class Role(models.Model):
 
         return self.name
 
+    __str__ = __unicode__
+
     def add_permission(self, permission):
 
         """ Add the permission if it's not already there """
