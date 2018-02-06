@@ -1,7 +1,7 @@
+from django.core.exceptions import PermissionDenied
 from django.test.testcases import TestCase
 from django.contrib.auth.models import User
 from django.views.generic.base import View
-from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from djinn_auth.views.base import PermissionProtectedMixin
@@ -74,11 +74,9 @@ class PermissionProtectedMixinTest(TestCase):
 
         view = ClosedView.as_view()
 
-        try:
+        with self.assertRaises(PermissionDenied) as ctx:
             view(Request("GET", self.user))
-            self.fail("GET should be forbidden")
-        except PermissionDenied:
-            pass
+        self.assertEqual('Not authorized', str(ctx.exception))
 
         self.user.user_permissions.add(self.perm)
 
@@ -90,29 +88,33 @@ class PermissionProtectedMixinTest(TestCase):
 
         self.assertEquals("POST OK", view(Request("POST", self.user)))
 
-        try:
+        with self.assertRaises(PermissionDenied) as ctx:
             view(Request("GET", self.user))
-            self.fail("GET should be forbidden")
-        except PermissionDenied:
-            pass
+        self.assertEqual('Not authorized', str(ctx.exception),
+                         "GET should be forbidden")
 
     def test_object_view(self):
 
-        thing = self.user
+        thing = self.user.profile
 
         view = ClosedDetailView.as_view(obj=thing)
 
-        try:
+        with self.assertRaises(PermissionDenied) as ctx:
             view(Request("GET", self.user))
-            self.fail("GET should be forbidden")
-        except PermissionDenied:
-            pass
+        self.assertEqual('Not authorized', str(ctx.exception),
+                         "GET should be forbidden")
 
         # Let's have some fun and assign a local permission to self...
         #
+        print("1: %s" % str(thing.get_local_roles(user=self.user, as_role=True)[0].permissions.filter(
+            codename='view')))
+
         owner, created = Role.objects.get_or_create(name="owner")
         owner.add_permission(self.perm)
 
         assign_local_role(self.user, thing, owner)
+
+        print("2: %s" % str(thing.get_local_roles(user=self.user, as_role=True)[0].permissions.filter(
+            codename='view')))
 
         self.assertEquals("GET OK", view(Request("GET", self.user)))
