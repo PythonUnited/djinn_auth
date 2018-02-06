@@ -2,8 +2,10 @@ from django.core.exceptions import PermissionDenied
 
 
 class PermissionProtectedMixin(object):
+    """
+    LET OP. PermissionProtectedMixin wordt in pgintranet (nog) niet gebruikt
 
-    """ Mixin to protect the view with a permission. If provided,
+    Mixin to protect the view with a permission. If provided,
     the class may actually check against the type of call """
 
     permission = None
