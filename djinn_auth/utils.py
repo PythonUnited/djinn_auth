@@ -40,7 +40,7 @@ def set_local_role(assignee, instance, role):
 
     """
 
-    if type(role) in [str, unicode]:
+    if type(role) in [str]:
         role = Role.objects.get(name=role)
 
     ctype = ContentType.objects.get_for_model(instance)
@@ -64,7 +64,7 @@ def assign_local_role(assignee, instance, role):
     instance_ct = ContentType.objects.get_for_model(instance)
     assignee_ct = ContentType.objects.get_for_model(assignee)
 
-    if type(role) in [str, unicode]:
+    if type(role) in [str]:
         role = Role.objects.get(name=role)
 
     LocalRole.objects.get_or_create(instance_ct=instance_ct,
@@ -81,7 +81,7 @@ def unassign_local_role(assignee, instance, role):
     instance_ct = ContentType.objects.get_for_model(instance)
     assignee_ct = ContentType.objects.get_for_model(assignee)
 
-    if type(role) in [str, unicode]:
+    if type(role) in [str]:
         role = Role.objects.get(name=role)
 
     LocalRole.objects.filter(instance_ct=instance_ct,
@@ -97,7 +97,7 @@ def assign_global_role(assignee, role):
 
     assignee_ct = ContentType.objects.get_for_model(assignee)
 
-    if type(role) in [str, unicode]:
+    if type(role) in [str]:
         role = Role.objects.get(name=role)
 
     GlobalRole.objects.get_or_create(assignee_ct=assignee_ct,
@@ -111,7 +111,7 @@ def unassign_global_role(assignee, role):
 
     assignee_ct = ContentType.objects.get_for_model(assignee)
 
-    if type(role) in [str, unicode]:
+    if type(role) in [str]:
         role = Role.objects.get(name=role)
 
     GlobalRole.objects.filter(assignee_ct=assignee_ct,
@@ -208,7 +208,7 @@ def get_local_roles(instance, role=None):
     _filter = {'instance_id': instance.id, 'instance_ct': ctype}
 
     if role:
-        if type(role) in [str, unicode]:
+        if type(role) in [str]:
             _filter['role__name'] = role
         else:
             _filter['role'] = role
@@ -244,7 +244,7 @@ def has_user_local_role(user, instance, role):
 
     """
 
-    if type(role) in [str, unicode]:
+    if type(role) in [str]:
         role = Role.objects.get(name=role)
 
     return get_user_local_roles(user, instance).filter(role=role).exists()

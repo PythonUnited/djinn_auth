@@ -43,7 +43,7 @@ class AuthBackend(object):
 
         """
 
-        if user.is_anonymous():
+        if user.is_anonymous:
             return False
 
         return self._check_all_permissions(user, permission, obj=obj)
@@ -55,6 +55,8 @@ class AuthBackend(object):
         locally if obj is provided, or is in a group with that
         permission.
         """
+
+        # print("djinn_auth.authbackend.AuthBackend._check_all_permissions...")
 
         perm_app, perm_name = perm.split(".")
 

@@ -11,6 +11,10 @@ class PermissionProtectedMixin(object):
     def get_permission(self, request):
 
         if type(self.permission) == dict:
+            #
+            # In this case, permission holds something like:
+            # {'GET': 'djinn_auth.view', 'POST': 'djinn_auth.change'}
+            #
             return self.permission.get(request.method)
         else:
             return self.permission
@@ -27,11 +31,14 @@ class PermissionProtectedMixin(object):
         except:
             obj = None
 
+        # print("check for %s on %s for user %s" % (
+        #     str(permission), str(obj), str(request.user)))
+
         return request.user.has_perm(permission, obj=obj)
 
     def handle_unauthorized(self):
 
-        raise PermissionDenied
+        raise PermissionDenied('Not authorized')
 
     def dispatch(self, request, *args, **kwargs):
 
