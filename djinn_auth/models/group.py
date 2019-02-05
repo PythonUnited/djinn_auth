@@ -25,6 +25,10 @@ class Group(PolymorphicModel):
         related_name='groups',
         blank=True)
 
+    @property
+    def ct_name(self):
+        return "group"
+
     def __unicode__(self):
 
         return self.name
